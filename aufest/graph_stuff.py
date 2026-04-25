@@ -37,8 +37,6 @@ class HKGraph:
         # Initialized within the hopcroft_karp_algorithm or bfs method
         self.dist = [INF] * (m + 1)
 
-        self.matches = []
-
     def add_edge(self, u, v):
         """
         Adds a directed edge from vertex u (left partition) to vertex v (right partition).
@@ -116,9 +114,7 @@ class HKGraph:
                         # update the matching: match v with u, and u with v
                         self.pair_v[v] = u
                         self.pair_u[u] = v
-                        self.matches.append((u,v))
                         print("matching u=",u,"to v=",v)
-                        print("matches:", self.matches)
                         return True  # Augmentation successful
 
             # If no augmenting path was found starting from u through any neighbor v,
@@ -142,7 +138,6 @@ class HKGraph:
         self.pair_v = [NIL] * (self.n + 1)
 
         matching_size = 0  # Initialize the size of the matching
-        self.matches = []
 
         # Keep finding augmenting paths using BFS and DFS until no more exist
         while self.bfs():
@@ -153,7 +148,7 @@ class HKGraph:
                     # Increment the matching size
                     matching_size += 1
 
-        return matching_size, self.matches
+        return matching_size, self.pair_u, self.pair_v
 
 # MAIN METHOD hi codes doing comments again
 if __name__ == "__main__":
@@ -215,6 +210,24 @@ if __name__ == "__main__":
             print(f"Warning: Skipping invalid hard-coded edge ({u}, {v}) - indices out of range [1..{v1}] or [1..{v2}]")
 
     # run the algorithm (this gives the size, list output printed from inside but i should change that)
-    max_matching_size, matched_items = g.hopcroft_karp_algorithm()
+    max_matching_size, pitches_to_artists, artists_to_pitches = g.hopcroft_karp_algorithm()
+
+    matches = []
+    unmatched_pitches = []
+    unmatched_artists = []
+    for i in range(1,len(pitches_to_artists)):
+        if pitches_to_artists[i] == 0:
+            unmatched_pitches.append(i)
+        else:
+            matches.append((i,pitches_to_artists[i]))
+    for i in range(1,len(artists_to_pitches)):
+        if artists_to_pitches[i] == 0:
+            unmatched_artists.append(i)
+        # already should be in matches
+
+    print("matches: ", matches)
+    print("unmatched_pitches: ", unmatched_pitches)
+    print("unmatched_artists: ", unmatched_artists)
+
+    # Print the result
     print(f"\nMaximum matching size is {max_matching_size}")
-    print(matched_items)
