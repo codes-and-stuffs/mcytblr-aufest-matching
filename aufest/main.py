@@ -62,15 +62,29 @@ def bipartite_match(artists, pitches, edge_list):
         else:
             print(f"Warning: Skipping invalid edge ({u}, {v}) - indices out of range [1..{number_of_pitches}] or [1..{number_of_artists}]")
 
-    # run the algorithm (this gives the size, list output printed from inside but i should change that)
-    max_matching_size = graph.hopcroft_karp_algorithm()
+    # run the algorithm
+    max_matching_size, pitches_to_artists, artists_to_pitches = g.hopcroft_karp_algorithm()
+
+    # compile lists of unmatched IDs
+    matches = []
+    unmatched_pitches = []
+    unmatched_artists = []
+    for i in range(1,len(pitches_to_artists)):
+        if pitches_to_artists[i] == 0:
+            unmatched_pitches.append(i)
+        else:
+            matches.append((i,pitches_to_artists[i]))
+    for i in range(1,len(artists_to_pitches)):
+        if artists_to_pitches[i] == 0:
+            unmatched_artists.append(i)
+        # already should be in matches
     
-    pass
+    return matches, unmatched_pitches, unmatched_artists
 
 
 def main():
     pitches = get_pitches()
     artists = get_artists()
     edge_list = create_graph()
-    matched_pairs, unmatched_artists, unmatched_pitches = bipartite_match(artists, pitches, edge_list)
+    matched_pairs, unmatched_pitches, unmatched_artists  = bipartite_match(pitches, artists, edge_list)
     # then pretty print the outputs
