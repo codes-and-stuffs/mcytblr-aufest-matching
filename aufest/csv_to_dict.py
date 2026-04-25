@@ -6,7 +6,7 @@ def load_authors(name_of_author_csv):
     # UNTESTED
     author_dict = {}
     with open(name_of_author_csv, newline='') as signup_csv:
-        signup_reader = csv.DictReader(signup_csv, fieldnames=["pitchID","discord","fandom","adults_only","mediums","dnms"])
+        signup_reader = csv.DictReader(signup_csv)
         next_id = 1
         for row in signup_reader:
             author_dict.update({next_id: row })
@@ -17,7 +17,7 @@ def load_artists(name_of_artist_csv):
     # UNTESTED
     artist_dict = {}
     with open(name_of_artist_csv, newline='') as signup_csv:
-        signup_reader = csv.DictReader(signup_csv, fieldnames=["discord","preferences","wildcards","adult", "mediums", "dnms"])
+        signup_reader = csv.DictReader(signup_csv)
         next_id = 1
         for row in signup_reader:
             artist_dict.update({next_id: row })
