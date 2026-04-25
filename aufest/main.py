@@ -26,22 +26,22 @@ def create_graph(artists=dict, pitches=dict):
             # if we have a dict matching the pitchID code to our internal pitchID (oh that's confusing why did i name the variables the same thing) 
             # then we can just grab our internal index for the pitch and test everything against that
             # why on earth did i do this instead. what was i thinking. i am so sorry i will fix that at some point probably
-            if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"])) or (pitches[pitchID]["fandom"].lower() in map(str.lower, artists[artistID]["wildcards"])):
+            if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"].split(";"))) or (pitches[pitchID]["fandom"].lower() in map(str.lower, artists[artistID]["wildcards"].split(";"))):
                 # check age
                 if (pitches[pitchID]["adults_only"] == "TRUE") and (artists[artistID]["adult"] == "FALSE"):
-                    print(f"Age mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                    print(f"Age mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
                 # check medium - this check IS case sensitive as we assume these are selected with checkboxes
-                elif len(list(set(pitches[pitchID]["mediums"]) & set(artists[artistID]["mediums"]))) == 0:
-                    print(f"Medium mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                elif len(list(set(pitches[pitchID]["mediums"].split(";")) & set(artists[artistID]["mediums"].split(";")))) == 0:
+                    print(f"Medium mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
                 # check for dnms
-                elif (pitches[pitchID]["discord"].lower() in map(str.lower, artists[artistID]["dnms"])) or (artists[artistID]["discord"].lower() in map(str.lower, pitches[pitchID]["dnms"])):
-                    print(f"DNM mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                elif (pitches[pitchID]["discord"].lower() in map(str.lower, artists[artistID]["dnms"].split(";"))) or (artists[artistID]["discord"].lower() in map(str.lower, pitches[pitchID]["dnms"].split(";"))):
+                    print(f"DNM mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
                 # check for same artist + author
                 elif (pitches[pitchID]["discord"]).lower() == artists[artistID]["discord"].lower():
-                    print(f"Artist matching to self - dropping edge")
+                    print(f"Artist matching to self - dropping edge for pitch {pitchID} and artist {artistID}")
                 else:
                     # all ok :) add edge!
-                    print(f"Adding edge for pitch {pitchID} and pitch {artistID}")
+                    print(f"Adding edge for pitch {pitchID} and artist {artistID}")
                     edge_list.append((pitchID, artistID))
     print(f"Edge list: {edge_list}")
     return edge_list
