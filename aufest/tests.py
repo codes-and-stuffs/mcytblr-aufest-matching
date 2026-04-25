@@ -1,7 +1,7 @@
 import unittest
 import random
 
-from testfandom import *
+from aufest.testfandom import *
 from testpitch import *
 from testartist import *
 
