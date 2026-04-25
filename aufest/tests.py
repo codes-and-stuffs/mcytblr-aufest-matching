@@ -1,9 +1,9 @@
+import unittest
+import random
+
 from testfandom import *
 from testpitch import *
 from testartist import *
-
-import unittest
-import random
 
 all_fandoms = create_fandoms()
 
