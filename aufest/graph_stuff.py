@@ -7,8 +7,6 @@ import random
 # define constants (honestly not needed SO much but it's how rosetta code lines it up with the mathematical definition of the algorithm)
 INF = float('inf')
 NIL = 0
-# make global array where we store the selected matches
-matches = []
 
 # graph class - from here on out all comments are from rosetta code and they explain it rlly well!
 class HKGraph:
@@ -38,6 +36,8 @@ class HKGraph:
         # dist[u] stores the distance (level) of vertex u in U during BFS
         # Initialized within the hopcroft_karp_algorithm or bfs method
         self.dist = [INF] * (m + 1)
+
+        self.matches = []
 
     def add_edge(self, u, v):
         """
@@ -116,9 +116,9 @@ class HKGraph:
                         # update the matching: match v with u, and u with v
                         self.pair_v[v] = u
                         self.pair_u[u] = v
-                        matches.append((u,v))
+                        self.matches.append((u,v))
                         print("matching u=",u,"to v=",v)
-                        print("matches:", matches)
+                        print("matches:", self.matches)
                         return True  # Augmentation successful
 
             # If no augmenting path was found starting from u through any neighbor v,
@@ -142,8 +142,7 @@ class HKGraph:
         self.pair_v = [NIL] * (self.n + 1)
 
         matching_size = 0  # Initialize the size of the matching
-        global matches
-        matches = []
+        self.matches = []
 
         # Keep finding augmenting paths using BFS and DFS until no more exist
         while self.bfs():
@@ -154,8 +153,7 @@ class HKGraph:
                     # Increment the matching size
                     matching_size += 1
 
-        print("matches:", matches)
-        return matching_size
+        return matching_size, self.matches
 
 # MAIN METHOD hi codes doing comments again
 if __name__ == "__main__":
@@ -217,5 +215,6 @@ if __name__ == "__main__":
             print(f"Warning: Skipping invalid hard-coded edge ({u}, {v}) - indices out of range [1..{v1}] or [1..{v2}]")
 
     # run the algorithm (this gives the size, list output printed from inside but i should change that)
-    max_matching_size = g.hopcroft_karp_algorithm()
+    max_matching_size, matched_items = g.hopcroft_karp_algorithm()
     print(f"\nMaximum matching size is {max_matching_size}")
+    print(matched_items)
