@@ -32,6 +32,6 @@ def create_fandoms():
     for i in range(10):
         teeny_tiny_fandom_name = f"teeny tiny SMP {i+1}"
         teeny_tiny_fandom = TestFandom(teeny_tiny_fandom_name, 0.01)
-        all_fandoms += teeny_tiny_fandom
+        all_fandoms.append(teeny_tiny_fandom)
 
     return all_fandoms
