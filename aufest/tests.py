@@ -2,8 +2,8 @@ import unittest
 import random
 
 from aufest.testfandom import *
-from testpitch import *
-from testartist import *
+from aufest.testpitch import *
+from aufest.testartist import *
 
 all_fandoms = create_fandoms()
 
