@@ -18,24 +18,32 @@ def create_graph(artists=dict, pitches=dict):
     # output: list of graph edges
     edge_list = []
 
+    # iterates through whether each pitch is present in artist preferences, checks it is OK, then adds an edge connecting artist to that pitch
+    # runs in O(mn) where m = number of pitches and n = number of artists - i couldn't think of a more efficient way apologies D:
     for artistID in artists:
-        print(artists[artistID]["preferences"])
         for pitchID in pitches:
-            print(pitches[pitchID]["pitchID"])
-            if (pitches[pitchID]["pitchID"] in artists[artistID]["preferences"]) or (pitches[pitchID]["fandom"] in artists[artistID]["wildcards"]):
-                if (pitches[pitchID]["adults_only"] == "true") and (artists[artistID]["adult"] == "false"):
-                    print("age mismatch")
+            # see NOW after adding everything to the branch i just thought of a way to make this run in O(n)!!
+            # if we have a dict matching the pitchID code to our internal pitchID (oh that's confusing why did i name the variables the same thing) 
+            # then we can just grab our internal index for the pitch and test everything against that
+            # why on earth did i do this instead. what was i thinking. i am so sorry i will fix that at some point probably
+            if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"])) or (pitches[pitchID]["fandom"].lower() in map(str.lower, artists[artistID]["wildcards"])):
+                # check age
+                if (pitches[pitchID]["adults_only"] == "TRUE") and (artists[artistID]["adult"] == "FALSE"):
+                    print(f"Age mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                # check medium - this check IS case sensitive as we assume these are selected with checkboxes
                 elif len(list(set(pitches[pitchID]["mediums"]) & set(artists[artistID]["mediums"]))) == 0:
-                    print("medium mismatch")
-                elif (pitches[pitchID]["discord"] in artists[artistID]["dnms"]) \
-                    or (artists[artistID]["discord"] in pitches[pitchID]["dnms"]):
-                    print("dnm mismatch")
-                elif (pitches[pitchID]["discord"]) == artists[artistID]["discord"]:
-                    print("same participant mismatch")
+                    print(f"Medium mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                # check for dnms
+                elif (pitches[pitchID]["discord"].lower() in map(str.lower, artists[artistID]["dnms"])) or (artists[artistID]["discord"].lower() in map(str.lower, pitches[pitchID]["dnms"])):
+                    print(f"DNM mismatch - dropping edge for pitch {pitchID} and pitch {artistID}")
+                # check for same artist + author
+                elif (pitches[pitchID]["discord"]).lower() == artists[artistID]["discord"].lower():
+                    print(f"Artist matching to self - dropping edge")
                 else:
-                    print("ok")
+                    # all ok :) add edge!
+                    print(f"Adding edge for pitch {pitchID} and pitch {artistID}")
                     edge_list.append((pitchID, artistID))
-    print(edge_list)
+    print(f"Edge list: {edge_list}")
     return edge_list
 
 
