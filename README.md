@@ -8,6 +8,6 @@ the evil machine of hopes and dreams
 - [ ] Finish up test suite
 - [ ] Test our machine with the test suite! :D
 - [ ] Add test CSVs (to see if we can load them in)
-- [ ] Test we can load in CSVs
+- [x] Test we can load in CSVs
 - [ ] Make pretty print output
 - [ ] Cheer and celebrate !!!
