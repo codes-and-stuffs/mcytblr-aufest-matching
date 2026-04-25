@@ -24,7 +24,7 @@ def create_participants(pitch_count=int):
             roll_dice_for_ship = random.choices(ships, weights=weights, k=1)
             ith_pitch = TestPitch(fandom.get_name(), roll_dice_for_ship, bool(i%2))
             print(f"{ith_pitch.get_fandom()} pitch {i}: {roll_dice_for_ship}, minors allowed? {bool(i%2)}")
-            pitches += ith_pitch
+            pitches.append(ith_pitch)
 
     pitches_dict = {}
     for i in range(len(pitches)):
