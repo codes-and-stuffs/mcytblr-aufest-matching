@@ -1,12 +1,17 @@
 # real basic ass skeleton code, please feel free to change it up as you see fit
 from graph_stuff import HKGraph
+import csv_to_dict
 
 def get_pitches(filename):
-    pass
+    pitches = csv_to_dict.load_authors(filename)
+    return pitches
+    # thought - for this and the next function, we CAN just copy over the code - or remove these functions and run these directly in the main code?
 
 
 def get_artists(filename):
-    pass
+    artists = csv_to_dict.load_artists(filename)
+    return artists
+    # see above
 
 
 def create_graph(artists=dict, pitches=dict):
