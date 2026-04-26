@@ -26,7 +26,7 @@ def create_graph(artists=dict, pitches=dict):
             # if we have a dict matching the pitchID code to our internal pitchID (oh that's confusing why did i name the variables the same thing) 
             # then we can just grab our internal index for the pitch and test everything against that
             # why on earth did i do this instead. what was i thinking. i am so sorry i will fix that at some point probably
-            if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"].split(";"))) or (pitches[pitchID]["fandom"].lower() in map(str.lower, artists[artistID]["wildcards"].split(";"))):
+            if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"].split(";"))) or (set(pitches[pitchID]["fandom"].split(";")) <= set(artists[artistID]["wildcards"].split(";"))):
                 # check age
                 if (pitches[pitchID]["adults_only"] == "TRUE") and (artists[artistID]["adult"] == "FALSE"):
                     print(f"Age mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
