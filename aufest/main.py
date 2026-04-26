@@ -91,8 +91,8 @@ def bipartite_match(artists, pitches, edge_list):
 
 
 def main():
-    pitches = get_pitches()
-    artists = get_artists()
+    pitches = get_pitches("pitches.csv")
+    artists = get_artists("artists.csv")
     edge_list = create_graph()
     matched_pairs, unmatched_pitches, unmatched_artists  = bipartite_match(pitches, artists, edge_list)
     # then pretty print the outputs
