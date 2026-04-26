@@ -7,7 +7,7 @@ the evil machine of hopes and dreams
 - [x] Integrate both sets of code together
 - [ ] Finish up test suite
 - [ ] Test our machine with the test suite! :D
-- [ ] Add test CSVs (to see if we can load them in)
+- [x] Add test CSVs (to see if we can load them in)
 - [x] Test we can load in CSVs
 - [ ] Make pretty print output
 - [ ] Cheer and celebrate !!!
