@@ -1,0 +1,5 @@
+pitchID,discord,fandom,adults_only,mediums,dnms
+W01,hippo,water,TRUE,Art;Podfic,
+L01,giraffe,land,FALSE,Webweave;Other,
+L02,lion,land,TRUE,Art;Webweave;Podfic;Other,tiger
+X01,frog,water;land,FALSE,Art;Webweave,ant;another_ant
