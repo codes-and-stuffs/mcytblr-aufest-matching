@@ -5,27 +5,23 @@ import csv_to_dict
 def get_pitches(filename):
     pitches = csv_to_dict.load_authors(filename)
     return pitches
-    # thought - for this and the next function, we CAN just copy over the code - or remove these functions and run these directly in the main code?
-
+    
 
 def get_artists(filename):
     artists = csv_to_dict.load_artists(filename)
     return artists
-    # see above
 
 
 def create_graph(artists=dict, pitches=dict):
-    # output: list of graph edges
-    edge_list = []
+    # outputs list of graph edges
 
+    # initialise list
+    edge_list = []
     # iterates through whether each pitch is present in artist preferences, checks it is OK, then adds an edge connecting artist to that pitch
-    # runs in O(mn) where m = number of pitches and n = number of artists - i couldn't think of a more efficient way apologies D:
+    # i attempted to make this more efficient but it's so much more convoluted and only goes from O(mn) to O(n) so i don't think it's worth it
     for artistID in artists:
         for pitchID in pitches:
-            # see NOW after adding everything to the branch i just thought of a way to make this run in O(n)!!
-            # if we have a dict matching the pitchID code to our internal pitchID (oh that's confusing why did i name the variables the same thing) 
-            # then we can just grab our internal index for the pitch and test everything against that
-            # why on earth did i do this instead. what was i thinking. i am so sorry i will fix that at some point probably
+            # TODO: make this fully case insensitive, just in case
             if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"].split(";"))) or (set(pitches[pitchID]["fandom"].split(";")) <= set(artists[artistID]["wildcards"].split(";"))):
                 # check age
                 if (pitches[pitchID]["adults_only"] == "TRUE") and (artists[artistID]["adult"] == "FALSE"):
@@ -43,28 +39,29 @@ def create_graph(artists=dict, pitches=dict):
                     # all ok :) add edge!
                     print(f"Adding edge for pitch {pitchID} and artist {artistID}")
                     edge_list.append((pitchID, artistID))
+    # print for debugging and return
     print(f"Edge list: {edge_list}")
     return edge_list
 
 
 def bipartite_match(artists, pitches, edge_list):
-    # output: pairs, unmatched artists, unmatched pitches
+    # outputs lists of matched pairs, unmatched artists, unmatched pitches
 
     # shuffle list of edges
     print("ORIGINAL LIST:")
     print(hardcoded_edges)
-    random.shuffle(hardcoded_edges)
+    random.shuffle(hardcoded_edges) # comment this line to remove randomisation
     print("SHUFFLED LIST:")
     print(hardcoded_edges)
-
+    
     # define graph size and then make it
-    number_of_pitches = len(pitches) # authors
-    number_of_artists = len(artists) # artists
+    number_of_pitches = len(pitches)
+    number_of_artists = len(artists)
     graph = HKGraph(number_of_pitches, number_of_artists)
 
     # add edges one by one, checking they're within the correct range
     for u, v in edges_data:
-        print(f"  Adding edge: ({u}, {v})")
+        print(f"Adding edge: ({u}, {v})")
         if 1 <= u <= number_of_pitches and 1 <= v <= number_of_artists:
             g.add_edge(u, v)
         else:
@@ -85,14 +82,17 @@ def bipartite_match(artists, pitches, edge_list):
     for i in range(1,len(artists_to_pitches)):
         if artists_to_pitches[i] == 0:
             unmatched_artists.append(i)
-        # already should be in matches
-    
+        # already should be in matches so continue
+    # all done, return
     return matches, unmatched_pitches, unmatched_artists
 
 
 def main():
+    # load inputs
     pitches = get_pitches("pitches.csv")
     artists = get_artists("artists.csv")
+    # make graph of possible matches
     edge_list = create_graph()
-    matched_pairs, unmatched_pitches, unmatched_artists  = bipartite_match(pitches, artists, edge_list)
+    # find best matchine
+    matched_pairs, unmatched_pitches, unmatched_artists = bipartite_match(pitches, artists, edge_list)
     # then pretty print the outputs
