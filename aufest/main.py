@@ -1,6 +1,7 @@
 # real basic ass skeleton code, please feel free to change it up as you see fit
 from graph_stuff import HKGraph
 import csv_to_dict
+import random
 
 def get_pitches(filename):
     pitches = csv_to_dict.load_authors(filename)
@@ -12,7 +13,7 @@ def get_artists(filename):
     return artists
 
 
-def create_graph(artists=dict, pitches=dict):
+def create_graph(artists, pitches):
     # outputs list of graph edges
 
     # initialise list
@@ -49,10 +50,10 @@ def bipartite_match(artists, pitches, edge_list):
 
     # shuffle list of edges
     print("ORIGINAL LIST:")
-    print(hardcoded_edges)
-    random.shuffle(hardcoded_edges) # comment this line to remove randomisation
+    print(edge_list)
+    random.shuffle(edge_list) # comment this line to remove randomisation
     print("SHUFFLED LIST:")
-    print(hardcoded_edges)
+    print(edge_list)
     
     # define graph size and then make it
     number_of_pitches = len(pitches)
@@ -60,15 +61,15 @@ def bipartite_match(artists, pitches, edge_list):
     graph = HKGraph(number_of_pitches, number_of_artists)
 
     # add edges one by one, checking they're within the correct range
-    for u, v in edges_data:
+    for u, v in edge_list:
         print(f"Adding edge: ({u}, {v})")
         if 1 <= u <= number_of_pitches and 1 <= v <= number_of_artists:
-            g.add_edge(u, v)
+            graph.add_edge(u, v)
         else:
             print(f"Warning: Skipping invalid edge ({u}, {v}) - indices out of range [1..{number_of_pitches}] or [1..{number_of_artists}]")
 
     # run the algorithm
-    max_matching_size, pitches_to_artists, artists_to_pitches = g.hopcroft_karp_algorithm()
+    max_matching_size, pitches_to_artists, artists_to_pitches = graph.hopcroft_karp_algorithm()
 
     # compile lists of unmatched IDs
     matches = []
@@ -92,7 +93,7 @@ def main():
     pitches = get_pitches("pitches.csv")
     artists = get_artists("artists.csv")
     # make graph of possible matches
-    edge_list = create_graph()
+    edge_list = create_graph(artists, pitches)
     # find best matchine
     matched_pairs, unmatched_pitches, unmatched_artists = bipartite_match(pitches, artists, edge_list)
     # then pretty print the outputs
