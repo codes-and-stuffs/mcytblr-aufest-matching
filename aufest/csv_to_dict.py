@@ -21,6 +21,24 @@ def load_artists(name_of_artist_csv):
             next_id += 1
     return artist_dict
 
+# put final lists into output csv file
+def output_to_csv(matched_pairs, unmatched_pitches, unmatched_artists, name_of_output_csv):
+    with open(name_of_output_csv, 'w', newline='') as output_csv:
+        writing_object = csv.writer(output_csv)
+        # i'm sure there's a nicer way to format this
+        writing_object.writerow(["Matched pairs"])
+        writing_object.writerow(["Pitch ID", "Author Discord", "Artist Discord"])
+        writing_object.writerows(matched_pairs)
+        writing_object.writerow([])
+        writing_object.writerow(["Unmatched authors"])
+        writing_object.writerow(["Pitch ID", "Author Discord"])
+        writing_object.writerows(unmatched_pitches)
+        writing_object.writerow([])
+        writing_object.writerow(["Unmatched artists"])
+        writing_object.writerow(["Artist Discord"])
+        writing_object.writerows(unmatched_artists)
+    return
+
 # does NOT RUN in normal execution - use this for debugging
 if __name__ == "__main__":
     # files to use
