@@ -9,5 +9,5 @@ the evil machine of hopes and dreams
 - [ ] Test our machine with the test suite! :D
 - [x] Add test CSVs (to see if we can load them in)
 - [x] Test we can load in CSVs
-- [ ] Make pretty print output
+- [x] Make pretty print output (currently doing so using output CSV)
 - [ ] Cheer and celebrate !!!
