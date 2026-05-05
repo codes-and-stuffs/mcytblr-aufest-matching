@@ -97,3 +97,14 @@ def main():
     # find best matchine
     matched_pairs, unmatched_pitches, unmatched_artists = bipartite_match(pitches, artists, edge_list)
     # then pretty print the outputs
+    matches_to_export = []
+    pitches_to_export = []
+    artists_to_export = []
+    for pitch, artist in matched_pairs:
+        matches_to_export.append([pitches[pitch]["pitchID"], pitches[pitch]["discord"], artists[artist]["discord"]])
+    for pitch in unmatched_pitches:
+        pitches_to_export.append([pitches[pitch]["pitchID"], pitches[pitch]["discord"]])
+    for artist in unmatched_artists:
+        artists_to_export.append([artists[artist]["discord"]])
+    csv_to_dict.output_to_csv(matches_to_export, pitches_to_export, artists_to_export, "output.csv")
+    print("All done! The finished lists can be found in output.csv.")
