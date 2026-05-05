@@ -162,10 +162,10 @@ if __name__ == "__main__":
 
     # shuffle things about here
     print("ORIGINAL LIST:")
-    print(hardcoded_edges)
-    random.shuffle(hardcoded_edges) # uncomment to remove randomisation
+    print(edges_data)
+    random.shuffle(edges_data) # uncomment to remove randomisation
     print("SHUFFLED LIST:")
-    print(hardcoded_edges)
+    print(edges_data)
 
     # define graph size and then make it
     v1 = number_of_authors
