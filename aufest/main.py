@@ -22,24 +22,27 @@ def create_graph(artists, pitches):
     # i attempted to make this more efficient but it's so much more convoluted and only goes from O(mn) to O(n) so i don't think it's worth it
     for artistID in artists:
         for pitchID in pitches:
-            # TODO: make this fully case insensitive, just in case
             if (pitches[pitchID]["pitchID"].upper() in map(str.upper, artists[artistID]["preferences"].split(";"))) or ((set(map(str.lower, pitches[pitchID]["fandom"].split(";")))) <= set(map(str.lower, artists[artistID]["wildcards"].split(";")))):
                 # check age
                 if (pitches[pitchID]["adults_only"] == "TRUE") and (artists[artistID]["adult"] == "FALSE"):
                     print(f"Age mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
+                    continue
                 # check medium - this check IS case sensitive as we assume these are selected with checkboxes
-                elif len(list(set(pitches[pitchID]["mediums"].split(";")) & set(artists[artistID]["mediums"].split(";")))) == 0:
-                    print(f"Medium mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
+                if ('mediums' in pitches[pitchID]) or ('mediums' in artists[artistID]):
+                    if len(list(set(pitches[pitchID]["mediums"].split(";")) & set(artists[artistID]["mediums"].split(";")))) == 0:
+                        print(f"Medium mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
+                        continue
                 # check for dnms
-                elif (pitches[pitchID]["discord"].lower() in map(str.lower, artists[artistID]["dnms"].split(";"))) or (artists[artistID]["discord"].lower() in map(str.lower, pitches[pitchID]["dnms"].split(";"))):
+                if (pitches[pitchID]["discord"].lower() in map(str.lower, artists[artistID]["dnms"].split(";"))) or (artists[artistID]["discord"].lower() in map(str.lower, pitches[pitchID]["dnms"].split(";"))):
                     print(f"DNM mismatch - dropping edge for pitch {pitchID} and artist {artistID}")
+                    continue
                 # check for same artist + author
-                elif (pitches[pitchID]["discord"]).lower() == artists[artistID]["discord"].lower():
+                if (pitches[pitchID]["discord"]).lower() == artists[artistID]["discord"].lower():
                     print(f"Artist matching to self - dropping edge for pitch {pitchID} and artist {artistID}")
-                else:
-                    # all ok :) add edge!
-                    print(f"Adding edge for pitch {pitchID} and artist {artistID}")
-                    edge_list.append((pitchID, artistID))
+                    continue
+                # all ok :) add edge!
+                print(f"Adding edge for pitch {pitchID} and artist {artistID}")
+                edge_list.append((pitchID, artistID))
     # print for debugging and return
     print(f"Edge list: {edge_list}")
     return edge_list
