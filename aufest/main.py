@@ -106,5 +106,5 @@ def main():
         pitches_to_export.append([pitches[pitch]["pitchID"], pitches[pitch]["discord"]])
     for artist in unmatched_artists:
         artists_to_export.append([artists[artist]["discord"]])
-    csv_to_dict.output_to_csv(matches_to_export, pitches_to_export, artists_to_export, "output.csv")
+    csv_to_dict.better_output_to_csv(matches_to_export, pitches_to_export, artists_to_export, "output.csv")
     print("All done! The finished lists can be found in output.csv.")
