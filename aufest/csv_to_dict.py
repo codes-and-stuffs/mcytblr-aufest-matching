@@ -39,7 +39,7 @@ def output_to_csv(matched_pairs, unmatched_pitches, unmatched_artists, name_of_o
         writing_object.writerows(unmatched_artists)
     return
 
-# put lists in output csv alongside each other
+# put lists in output csv alongside each other - essentially a "pretty print" version
 def better_output_to_csv(matched_pairs, unmatched_pitches, unmatched_artists, name_of_output_csv):
     # set up three 'columns'
     to_write = []
@@ -50,8 +50,15 @@ def better_output_to_csv(matched_pairs, unmatched_pitches, unmatched_artists, na
         this_row = []
         for list_to_load in [matched_pairs, unmatched_pitches, unmatched_artists]:
             if i < len(list_to_load):
+                # column exists here - print values
                 for item in list_to_load[i]:
                     this_row.append(item)
+            else:
+                # add necessary whitespace if no column here
+                if list_to_load == matched_pairs:
+                    this_row.extend(["","",""])
+                if list_to_load == unmatched_pitches:
+                    this_row.extend(["",""])
         to_write.append(this_row)
     # drop that directly into the CSV
     with open(name_of_output_csv, 'w', newline='') as output_csv:
